@@ -1,4 +1,4 @@
-# curso-vue2-day1
+# Vue 2 course example app
 
 ## Project setup
 ```
