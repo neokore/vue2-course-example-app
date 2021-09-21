@@ -1,19 +1,22 @@
 <template>
-  <div>
+  <div class="fruits-component">
     <h2>Fruits!</h2>
     <ul class="fruits-container">
-      <li v-for="{ id, name, description, link, image } in fruits" :key="id">
-        <img :src="require(`../assets/fruits/${image}`)" />
+      <li v-for="(fruit, index) in fruits" :key="fruit.id">
+        <img :src="require(`../assets/fruits/${fruit.image}`)" />
         <div class="content">
-          <h3>{{ name }}</h3>
+          <h3>{{ fruit.name }}</h3>
           <p>
-            {{ description }}
-            <a v-if="link" :href="link">More info</a>
+            {{ fruit.description }}
+            <a v-if="fruit.link" :href="fruit.link">More info</a>
           </p>
-          <button @click="deleteFruit(id)">Delete</button>
+          <button @click="deleteFruit(index)">Delete</button>
         </div>
       </li>
     </ul>
+    <footer v-if="!fruitsHasChanged">
+      <button @click="restoreFruits()">Restore</button>
+    </footer>
   </div>
 </template>
 
@@ -21,17 +24,29 @@
 export default {
   name: 'Fruits',
   data: () => ({
-    fruits: []
+    fruits: [],
+    fruitsTemplate: []
   }),
+  computed: {
+    fruitsHasChanged() {
+      return this.fruits.length === this.fruitsTemplate.length;
+    }
+  },
   methods: {
-    deleteFruit(fruitId) {
-      console.log(`Borraré la fruta ${fruitId}`);
+    deleteFruit(index) {
+      this.fruits = [
+        ...this.fruits.slice(0, index),
+        ...this.fruits.slice(index + 1)
+      ];
+    },
+    restoreFruits() {
+      this.fruits = [...this.fruitsTemplate];
     }
   },
   created() {
     setTimeout(() => {
       // Simular llamada API
-      this.fruits = [
+      this.fruitsTemplate = [
         {
           id: 1,
           name: 'Apple',
@@ -92,7 +107,8 @@ export default {
             'The smooth-skinned, green or purple fruit that grows in clusters on vines, may be eaten, and is used to make wine.'
         }
       ];
-    }, 0);
+      this.restoreFruits();
+    }, 1000);
   }
 };
 </script>
@@ -100,26 +116,44 @@ export default {
 <style lang="scss" scoped>
 $IMAGE_SIZE: 120px;
 
-.fruits-container {
-  li {
-    display: flex;
-    flex-direction: row;
-    align-content: flex-start;
-    justify-items: center;
-    list-style: none;
-    padding: 16px 8px;
+.fruits-component {
+  max-height: 100%;
 
-    img {
-      flex: 0 0 $IMAGE_SIZE;
-      width: $IMAGE_SIZE;
-      height: $IMAGE_SIZE;
-      padding-right: 16px;
-    }
+  .fruits-container {
+    flex: 1 1 auto;
+    overflow-y: auto;
 
-    .content {
-      flex: 1 0 0;
-      text-align: left;
+    li {
+      display: flex;
+      flex-direction: row;
+      align-content: flex-start;
+      justify-items: center;
+      list-style: none;
+      padding: 16px 8px;
+
+      img {
+        flex: 0 0 $IMAGE_SIZE;
+        width: $IMAGE_SIZE;
+        height: $IMAGE_SIZE;
+        padding-right: 16px;
+      }
+
+      .content {
+        flex: 1 0 0;
+        text-align: left;
+
+        button {
+          margin-top: 4px;
+        }
+      }
     }
+  }
+
+  footer {
+    position: sticky;
+    bottom: 0;
+    padding: 16px;
+    background: #f99;
   }
 }
 </style>
