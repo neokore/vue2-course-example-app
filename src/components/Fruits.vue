@@ -2,17 +2,13 @@
   <div class="fruits-component">
     <h2>Fruits!</h2>
     <ul class="fruits-container">
-      <li v-for="(fruit, index) in fruits" :key="fruit.id">
-        <img :src="require(`../assets/fruits/${fruit.image}`)" />
-        <div class="content">
-          <h3>{{ fruit.name }}</h3>
-          <p>
-            {{ fruit.description }}
-            <a v-if="fruit.link" :href="fruit.link">More info</a>
-          </p>
-          <button @click="deleteFruit(index)">Delete</button>
-        </div>
-      </li>
+      <li
+        v-for="(fruit, index) in fruits"
+        :is="getFruitComponent(fruit)"
+        :key="fruit.id"
+        :fruit="fruit"
+        @delete="deleteFruit(index)"
+      ></li>
     </ul>
     <footer v-if="!fruitsHasChanged">
       <button @click="restoreFruits()">Restore</button>
@@ -21,8 +17,11 @@
 </template>
 
 <script>
+import FruitCard from './FruitCard.vue';
+
 export default {
   name: 'Fruits',
+  components: { FruitCard },
   data: () => ({
     fruits: [],
     fruitsTemplate: []
@@ -41,6 +40,9 @@ export default {
     },
     restoreFruits() {
       this.fruits = [...this.fruitsTemplate];
+    },
+    getFruitComponent(fruit) {
+      return fruit.id % 2 === 1 ? 'fruit-card' : 'p';
     }
   },
   created() {
@@ -114,39 +116,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$IMAGE_SIZE: 120px;
-
 .fruits-component {
   max-height: 100%;
 
   .fruits-container {
     flex: 1 1 auto;
     overflow-y: auto;
-
-    li {
-      display: flex;
-      flex-direction: row;
-      align-content: flex-start;
-      justify-items: center;
-      list-style: none;
-      padding: 16px 8px;
-
-      img {
-        flex: 0 0 $IMAGE_SIZE;
-        width: $IMAGE_SIZE;
-        height: $IMAGE_SIZE;
-        padding-right: 16px;
-      }
-
-      .content {
-        flex: 1 0 0;
-        text-align: left;
-
-        button {
-          margin-top: 4px;
-        }
-      }
-    }
   }
 
   footer {

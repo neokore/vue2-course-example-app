@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <h1>Look ma, I'm an app</h1>
+    <fruit-form />
     <Fruits class="fruits" />
   </div>
 </template>
 
 <script>
+import FruitForm from './components/FruitForm.vue';
 import Fruits from './components/Fruits.vue';
 export default {
   name: 'App',
   components: {
-    Fruits
+    Fruits,
+    FruitForm
   }
 };
 </script>
