@@ -1,6 +1,14 @@
 <template>
   <div class="fruits-component">
     <h2>Fruits!</h2>
+    <fruit-form
+      @create="addFruit"
+      class="form"
+      :class="{ hidden: !showForm }"
+    />
+    <button @click="showForm = !showForm">
+      {{ showForm ? 'Hide form' : 'Show form' }}
+    </button>
     <ul class="fruits-container">
       <li
         v-for="(fruit, index) in fruits"
@@ -18,13 +26,15 @@
 
 <script>
 import FruitCard from './FruitCard.vue';
+import FruitForm from './FruitForm.vue';
 
 export default {
   name: 'Fruits',
-  components: { FruitCard },
+  components: { FruitCard, FruitForm },
   data: () => ({
     fruits: [],
-    fruitsTemplate: []
+    fruitsTemplate: [],
+    showForm: false
   }),
   computed: {
     fruitsHasChanged() {
@@ -32,6 +42,9 @@ export default {
     }
   },
   methods: {
+    addFruit(fruit) {
+      this.fruits.push(fruit);
+    },
     deleteFruit(index) {
       this.fruits = [
         ...this.fruits.slice(0, index),
@@ -116,17 +129,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hidden {
+  display: none;
+}
+
 .fruits-component {
   max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .form {
+    max-width: 60%;
+  }
 
   .fruits-container {
     flex: 1 1 auto;
-    overflow-y: auto;
   }
 
   footer {
     position: sticky;
     bottom: 0;
+    align-self: stretch;
     padding: 16px;
     background: #f99;
   }
