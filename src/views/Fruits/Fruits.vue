@@ -9,6 +9,9 @@
     <button @click="showForm = !showForm">
       {{ showForm ? 'Hide form' : 'Show form' }}
     </button>
+    <div class="detail">
+      <router-view></router-view>
+    </div>
     <ul class="fruits-container">
       <li
         v-for="(fruit, index) in fruits"
@@ -25,13 +28,18 @@
 </template>
 
 <script>
-import FruitCard from './FruitCard.vue';
-import FruitForm from './FruitForm.vue';
+import FruitCard from './components/FruitCard.vue';
+import FruitForm from './components/FruitForm.vue';
 import { getFruits } from '@/services/fruitsService';
 
 export default {
   name: 'Fruits',
   components: { FruitCard, FruitForm },
+  props: {
+    id: {
+      type: String
+    }
+  },
   data: () => ({
     fruits: [],
     fruitsTemplate: [],

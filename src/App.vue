@@ -1,16 +1,22 @@
 <template>
   <div id="app">
-    <h1>Look ma, I'm an app</h1>
-    <Fruits class="fruits" />
+    <router-view name="header"></router-view>
+    <button @click="goToFrutas()">Go to frutas</button>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Fruits from './components/Fruits.vue';
 export default {
   name: 'App',
-  components: {
-    Fruits
+  methods: {
+    goToFrutas() {
+      this.$router.push({
+        name: 'fruit',
+        params: { id: 'apple' },
+        query: { id: 'banana' }
+      });
+    }
   }
 };
 </script>
@@ -34,10 +40,6 @@ button {
   height: 100vh;
   display: flex;
   flex-direction: column;
-
-  .fruits {
-    flex: 1 1 0;
-    max-height: 100%;
-  }
+  align-items: center;
 }
 </style>
