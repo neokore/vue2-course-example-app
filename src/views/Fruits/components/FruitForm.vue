@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import FormInput from './FormInput.vue';
+import FormInput from '@/components/FormInput.vue';
 
 const URL_CHECK_REGEX =
   /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;

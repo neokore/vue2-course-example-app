@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <h1>Look ma, I'm an app</h1>
-    <Fruits class="fruits" />
+    <router-view name="header"></router-view>
+    <button @click="goToFruits()">Go to Fruits</button>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Fruits from './components/Fruits.vue';
 export default {
   name: 'App',
-  components: {
-    Fruits
+  methods: {
+    goToFruits() {
+      this.$router.push({ name: 'fruits' });
+    }
   }
 };
 </script>
@@ -34,6 +36,7 @@ button {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   .fruits {
     flex: 1 1 0;

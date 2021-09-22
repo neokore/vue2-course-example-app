@@ -31,7 +31,7 @@ export default {
 <style lang="scss" scoped>
 label {
   display: block;
-  
+
   pre {
     color: red;
   }

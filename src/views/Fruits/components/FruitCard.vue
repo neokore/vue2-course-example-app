@@ -1,8 +1,14 @@
 <template>
   <li>
-    <img :src="require(`../assets/fruits/${fruit.image}`)" />
+    <img :src="require(`@/assets/fruits/${fruit.image}`)" />
     <div class="content">
-      <h3>{{ fruit.name }}</h3>
+      <h3>
+        <router-link
+          :to="{ name: 'fruit-detail', params: { name: fruit.name } }"
+        >
+          {{ fruit.name }}
+        </router-link>
+      </h3>
       <p>
         {{ fruit.description }}
         <a v-if="fruit.link" :href="fruit.link">More info</a>
