@@ -1,5 +1,8 @@
 <template>
-  <h1>404: Not Found</h1>
+  <section class="home">
+    <h1>404: Not Found</h1>
+    <router-link to="/" class="button"> Back to home </router-link>
+  </section>
 </template>
 
 <script>
@@ -8,4 +11,18 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.home {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    padding: 8px 0 4px;
+    margin-bottom: 32px;
+  }
+}
+</style>

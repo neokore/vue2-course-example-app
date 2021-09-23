@@ -1,15 +1,26 @@
+import Home from '@/views/Home.vue';
+
 const routes = [
-  { path: '/', redirect: '/fruits' },
+  {
+    path: '/',
+    component: Home
+  },
   {
     path: '/fruits',
     name: 'fruits',
-    // alias: '/',
     components: {
       default: () =>
         import(/* webpackChunkName: "fruits" */ '@/views/Fruits/Fruits.vue'),
       header: () => import('@/components/AppHeader.vue')
     },
-    props: (route) => ({ name: route.query.name }),
+    props: {
+      default: (route) => ({
+        filter: {
+          name: route.query.name,
+          description: route.query.description
+        }
+      })
+    },
     children: [
       {
         path: ':name',
@@ -19,6 +30,13 @@ const routes = [
             /* webpackChunkName: "fruits" */ '@/views/Fruits/FruitDetail.vue'
           ),
         props: true
+      },
+      {
+        path: 'create',
+        name: 'fruit-create',
+        components: {
+          dialog: () => import('@/views/Fruits/components/FruitForm.vue')
+        }
       }
     ]
   },

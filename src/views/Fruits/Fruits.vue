@@ -1,51 +1,47 @@
 <template>
   <div class="fruits-component">
     <h2>Fruits!</h2>
-    <fruit-form
-      @create="addFruit"
-      class="form"
-      :class="{ hidden: !showForm }"
-    />
-    <button @click="showForm = !showForm">
-      {{ showForm ? 'Hide form' : 'Show form' }}
-    </button>
-    <section class="detail">
-      <router-view></router-view>
+    <section class="fruits-container">
+      <ul class="fruits-list">
+        <fruit-card
+          v-for="(fruit, index) in fruits"
+          :key="fruit.id"
+          :fruit="fruit"
+          @delete="deleteFruit(index)"
+        />
+      </ul>
+      <aside class="fruits-detail">
+        <router-view></router-view>
+      </aside>
     </section>
-    <ul class="fruits-container">
-      <li
-        v-for="(fruit, index) in fruits"
-        :is="getFruitComponent(fruit)"
-        :key="fruit.id"
-        :fruit="fruit"
-        @delete="deleteFruit(index)"
-      >
-        {{ fruit.name }}
-      </li>
-    </ul>
-    <footer v-if="!fruitsHasChanged">
-      <button @click="restoreFruits()">Restore</button>
+    <footer>
+      <router-link :to="{ name: 'fruit-create' }" tag="button">
+        Create
+      </router-link>
+      <button v-if="!fruitsHasChanged" @click="restoreFruits()">Restore</button>
     </footer>
+    <dialog :open="$route.matched.some(({ name }) => name === 'fruit-create')">
+      <router-view @create="addFruit" name="dialog"></router-view>
+    </dialog>
   </div>
 </template>
 
 <script>
 import FruitCard from './components/FruitCard.vue';
-import FruitForm from './components/FruitForm.vue';
 import { getFruits } from '@/services/fruitService';
 
 export default {
   name: 'Fruits',
-  components: { FruitCard, FruitForm },
+  components: { FruitCard },
   props: {
-    name: {
-      type: String
+    filter: {
+      name: '',
+      description: ''
     }
   },
   data: () => ({
     fruits: [],
-    fruitsTemplate: [],
-    showForm: false
+    fruitsTemplate: []
   }),
   computed: {
     fruitsHasChanged() {
@@ -55,6 +51,18 @@ export default {
   methods: {
     addFruit(fruit) {
       this.fruits.push(fruit);
+      this.$router.push({ name: 'fruit-detail', params: { name: fruit.name } });
+    },
+    filterFruits() {
+      if (this.filter.name?.length || this.filter.description?.length) {
+        this.fruits = this.fruits.filter(
+          (elem) =>
+            (this.filter.name?.length &&
+              elem.name.includes(this.filter.name)) ||
+            (this.filter.description?.length &&
+              elem.description.includes(this.filter.description))
+        );
+      }
     },
     deleteFruit(index) {
       this.fruits = [
@@ -64,17 +72,12 @@ export default {
     },
     restoreFruits() {
       this.fruits = [...this.fruitsTemplate];
-    },
-    getFruitComponent(fruit) {
-      return fruit.id % 2 === 1 ? 'fruit-card' : 'p';
     }
   },
   async created() {
     this.fruitsTemplate = await getFruits();
     this.restoreFruits();
-
-    // Params
-    console.log(`Has seleccionado la fruta: ${this.name}`);
+    this.filterFruits();
   }
 };
 </script>
@@ -90,24 +93,42 @@ export default {
   flex-direction: column;
   align-items: center;
 
-  .form {
-    max-width: 60%;
-  }
-
-  .detail {
-    margin: 16px 8px;
-  }
-
   .fruits-container {
-    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+
+    .fruits-detail {
+      flex: 0 0 auto;
+    }
+
+    .fruits-list {
+      flex: 1 1 auto;
+    }
   }
 
   footer {
     position: sticky;
     bottom: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 12px;
     align-self: stretch;
     padding: 16px;
-    background: #f99;
+    border-top: 1px solid rgba(237, 251, 255, 0.667);
+    background: rgba(223, 230, 255, 0.4);
+    backdrop-filter: blur(4px);
+
+    button,
+    .button {
+      background-color: #fffa;
+    }
+  }
+
+  dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>
