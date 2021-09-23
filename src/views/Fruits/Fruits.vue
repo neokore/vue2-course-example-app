@@ -1,5 +1,6 @@
 <template>
   <div class="fruits-component">
+    {{ count }}
     <h2>Fruits!</h2>
     <section class="fruits-container">
       <ul class="fruits-list">
@@ -29,6 +30,11 @@
 <script>
 import FruitCard from './components/FruitCard.vue';
 import { getFruits } from '@/services/fruitService';
+import { mapGetters, mapMutations } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+import { GETTERS, MUTATION_ADD_COUNT } from '../../store/fav';
+
+const { mapState, mapActions } = createNamespacedHelpers('fav');
 
 export default {
   name: 'Fruits',
@@ -46,7 +52,13 @@ export default {
   computed: {
     fruitsHasChanged() {
       return this.fruits.length === this.fruitsTemplate.length;
-    }
+    },
+    ...mapState({
+      count: 'count'
+    }),
+    ...mapGetters('fav', {
+      favListSize: GETTERS.favListSize
+    })
   },
   methods: {
     addFruit(fruit) {
@@ -72,12 +84,22 @@ export default {
     },
     restoreFruits() {
       this.fruits = [...this.fruitsTemplate];
-    }
+    },
+    ...mapMutations('fav', {
+      addCount: MUTATION_ADD_COUNT,
+      addCountBy: 'addCountBy'
+    }),
+    ...mapActions({
+      loadFavs: 'loadFavList'
+    })
   },
   async created() {
     this.fruitsTemplate = await getFruits();
     this.restoreFruits();
     this.filterFruits();
+    this.addCountBy(10);
+    this.$store.dispatch('fav/loadFavList');
+    this.loadFavs(10);
   }
 };
 </script>

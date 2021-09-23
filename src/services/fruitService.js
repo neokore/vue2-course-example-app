@@ -1,9 +1,3 @@
-import fruitMock from './mocks/fruit';
+import { get } from './apiClient';
 
-export const getFruits = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(fruitMock);
-    }, 1000);
-  });
-};
+export const getFruits = () => get('/fruits');
