@@ -7,7 +7,7 @@ import {
 
 export default {
   namespaced: true,
-  store: {
+  state: {
     fruits: [],
     selectedFruit: null
   },
@@ -17,11 +17,11 @@ export default {
     }
   },
   mutations: {
-    setFruits(store, fruitsList) {
-      store.fruits = [...fruitsList];
+    setFruits(state, fruitList) {
+      state.fruits = [...fruitList];
     },
-    setSelectedFruit(store, fruit) {
-      store.selectedFruit = { ...fruit };
+    setSelectedFruit(state, fruit) {
+      state.selectedFruit = { ...fruit };
     }
   },
   actions: {

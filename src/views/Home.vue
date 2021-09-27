@@ -1,6 +1,8 @@
 <template>
   <section class="home">
-    <h1>Welcome to Vue 2</h1>
+    <h1>{{ $t('home.greetings', { username: 'Pepe' }) }}</h1>
+    <p>{{ $tc('home.fruit', 0) }}</p>
+
     <router-link :to="{ name: 'fruits' }" class="button image-button">
       <img :src="require('@/assets/fruits/apple.png')" />
       Go to fruits

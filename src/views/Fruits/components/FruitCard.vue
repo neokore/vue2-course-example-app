@@ -4,12 +4,12 @@
     <div class="content">
       <h3>
         <router-link :to="{ name: 'fruit-detail', params: { id: fruit.id } }">
-          {{ fruit.name }}
+          {{ fruit.name | titleCase(fruit.id) }}
         </router-link>
       </h3>
       <p>
         {{ fruit.description }}
-        <a v-if="fruit.link" :href="fruit.link">More info</a>
+        <a v-if="fruit.link" :href="fruit.link | titleCase">More info</a>
       </p>
       <button @click="$emit('delete')">Delete</button>
     </div>
