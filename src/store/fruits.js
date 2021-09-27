@@ -7,21 +7,21 @@ import {
 
 export default {
   namespaced: true,
-  store: {
+  state: {
     fruits: [],
     selectedFruit: null
   },
   getters: {
-    getFruitById(store) {
-      return (id) => store.fruits.find((fruit) => fruit.id === id);
+    getFruitById(state) {
+      return (id) => state.fruits.find((fruit) => fruit.id === id);
     }
   },
   mutations: {
-    setFruits(store, fruitsList) {
-      store.fruits = [...fruitsList];
+    setFruits(state, fruitsList) {
+      state.fruits = [...fruitsList];
     },
-    setSelectedFruit(store, fruit) {
-      store.selectedFruit = { ...fruit };
+    setSelectedFruit(state, fruit) {
+      state.selectedFruit = { ...fruit };
     }
   },
   actions: {
