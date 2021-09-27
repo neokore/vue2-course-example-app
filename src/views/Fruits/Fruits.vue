@@ -1,14 +1,13 @@
 <template>
   <div class="fruits-component">
-    {{ count }}
     <h2>Fruits!</h2>
     <section class="fruits-container">
       <ul class="fruits-list">
         <fruit-card
-          v-for="(fruit, index) in fruits"
+          v-for="fruit in fruits"
           :key="fruit.id"
           :fruit="fruit"
-          @delete="deleteFruit(index)"
+          @delete="deleteFruit(fruit.id)"
         />
       </ul>
       <aside class="fruits-detail">
@@ -19,7 +18,7 @@
       <router-link :to="{ name: 'fruit-create' }" tag="button">
         Create
       </router-link>
-      <button v-if="!fruitsHasChanged" @click="restoreFruits()">Restore</button>
+      <button @click="restoreFruits()">Restore</button>
     </footer>
     <dialog :open="$route.matched.some(({ name }) => name === 'fruit-create')">
       <router-view @create="addFruit" name="dialog"></router-view>
@@ -28,13 +27,10 @@
 </template>
 
 <script>
-import FruitCard from './components/FruitCard.vue';
-import { getFruits } from '@/services/fruitService';
-import { mapGetters, mapMutations } from 'vuex';
 import { createNamespacedHelpers } from 'vuex';
-import { GETTERS, MUTATION_ADD_COUNT } from '../../store/fav';
+import FruitCard from './components/FruitCard.vue';
 
-const { mapState, mapActions } = createNamespacedHelpers('fav');
+const { mapState, mapActions } = createNamespacedHelpers('fruits');
 
 export default {
   name: 'Fruits',
@@ -45,24 +41,12 @@ export default {
       description: ''
     }
   },
-  data: () => ({
-    fruits: [],
-    fruitsTemplate: []
-  }),
   computed: {
-    fruitsHasChanged() {
-      return this.fruits.length === this.fruitsTemplate.length;
-    },
-    ...mapState({
-      count: 'count'
-    }),
-    ...mapGetters('fav', {
-      favListSize: GETTERS.favListSize
-    })
+    ...mapState(['fruits'])
   },
   methods: {
-    addFruit(fruit) {
-      this.fruits.push(fruit);
+    async addFruit(fruit) {
+      await this.createFruit(fruit);
       this.$router.push({ name: 'fruit-detail', params: { name: fruit.name } });
     },
     filterFruits() {
@@ -76,30 +60,15 @@ export default {
         );
       }
     },
-    deleteFruit(index) {
-      this.fruits = [
-        ...this.fruits.slice(0, index),
-        ...this.fruits.slice(index + 1)
-      ];
-    },
-    restoreFruits() {
-      this.fruits = [...this.fruitsTemplate];
-    },
-    ...mapMutations('fav', {
-      addCount: MUTATION_ADD_COUNT,
-      addCountBy: 'addCountBy'
-    }),
     ...mapActions({
-      loadFavs: 'loadFavList'
+      restoreFruits: 'loadFruits',
+      createFruit: 'createFruit',
+      deleteFruit: 'deleteFruit'
     })
   },
   async created() {
-    this.fruitsTemplate = await getFruits();
     this.restoreFruits();
-    this.filterFruits();
-    this.addCountBy(10);
-    this.$store.dispatch('fav/loadFavList');
-    this.loadFavs(10);
+    // this.filterFruits();
   }
 };
 </script>

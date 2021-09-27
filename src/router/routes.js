@@ -23,7 +23,7 @@ const routes = [
     },
     children: [
       {
-        path: ':name',
+        path: ':id',
         name: 'fruit-detail',
         component: () =>
           import(

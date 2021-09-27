@@ -3,9 +3,7 @@
     <img :src="require(`@/assets/fruits/${fruit.image}`)" />
     <div class="content">
       <h3>
-        <router-link
-          :to="{ name: 'fruit-detail', params: { name: fruit.name } }"
-        >
+        <router-link :to="{ name: 'fruit-detail', params: { id: fruit.id } }">
           {{ fruit.name }}
         </router-link>
       </h3>
