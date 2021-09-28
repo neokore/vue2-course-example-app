@@ -7,8 +7,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import logRoutes from '@/mixins/logRoutes';
 export default {
   name: 'FruitDetail',
+  mixins: [logRoutes],
   props: {
     id: {
       type: Number

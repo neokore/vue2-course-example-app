@@ -1,6 +1,6 @@
 <template>
   <div class="fruits-component">
-    <h2>Fruits! {{ fruits | count }}</h2>
+    <h2 v-coloured="fruits.length">Fruits! {{ fruits | count }}</h2>
     <section class="fruits-container">
       <ul class="fruits-list">
         <fruit-card
@@ -29,11 +29,13 @@
 <script>
 import { createNamespacedHelpers } from 'vuex';
 import FruitCard from './components/FruitCard.vue';
+import logRoutes from '@/mixins/logRoutes';
 
 const { mapState, mapActions } = createNamespacedHelpers('fruits');
 
 export default {
   name: 'Fruits',
+  mixins: [logRoutes],
   components: { FruitCard },
   props: {
     filter: {
@@ -44,6 +46,9 @@ export default {
   computed: {
     ...mapState(['fruits'])
   },
+  data: () => ({
+    myData: {}
+  }),
   methods: {
     async addFruit(fruit) {
       await this.createFruit(fruit);

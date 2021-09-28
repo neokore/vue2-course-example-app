@@ -1,4 +1,5 @@
 import Home from '@/views/Home.vue';
+import ModuleARoutes from '@/modules/moduleA/router';
 
 const routes = [
   {
@@ -45,7 +46,8 @@ const routes = [
     name: 'not-found',
     component: () =>
       import(/* webpackChunkName: "not-found" */ '@/views/NotFound.vue')
-  }
+  },
+  ModuleARoutes
 ];
 
 export default routes;

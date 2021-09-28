@@ -15,7 +15,6 @@ const fetchJSON = async (url, options) => {
       throw new Error(`${response.status}: ${response.statusText}`);
   } catch (e) {
     console.error(e, e.message);
-    debugger;
   }
   return await response.json();
 };

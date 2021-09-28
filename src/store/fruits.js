@@ -31,10 +31,14 @@ export default {
         commit('setFruits', fruits);
       } catch (e) {
         let message = 'Cannot get fruits';
-        if (e.contains('404')) {
+        if (e.message.includes('404')) {
           message = 'There is no fruits';
         }
-        throw new Error(message);
+        commit(
+          'messages/addMessage',
+          { type: 'error', message },
+          { root: true }
+        );
       }
     },
     async loadSelectedFruit({ commit }, id) {
@@ -43,10 +47,14 @@ export default {
         commit('setSelectedFruit', fruit);
       } catch (e) {
         let message = 'Cannot get selected fruit';
-        if (e.contains('404')) {
+        if (e.message.includes('404')) {
           message = 'There is no fruit with this ID';
         }
-        throw new Error(message);
+        commit(
+          'messages/addMessage',
+          { type: 'error', message },
+          { root: true }
+        );
       }
     },
     async createFruit({ dispatch }, fruit) {
