@@ -8,9 +8,15 @@ const fetchJSON = async (url, options) => {
       Accept: 'application/json'
     }
   };
-  const response = await fetch(url, fetchOptions);
-  if (!response.ok)
-    throw new Error(`${response.status}: ${response.statusText}`);
+  let response;
+  try {
+    response = await fetch(url, fetchOptions);
+    if (!response.ok)
+      throw new Error(`${response.status}: ${response.statusText}`);
+  } catch (e) {
+    console.error(e, e.message);
+    debugger;
+  }
   return await response.json();
 };
 

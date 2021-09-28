@@ -1,6 +1,6 @@
 <template>
   <div class="fruits-component">
-    <h2>Fruits!</h2>
+    <h2>Fruits! {{ fruits | count }}</h2>
     <section class="fruits-container">
       <ul class="fruits-list">
         <fruit-card

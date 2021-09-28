@@ -6,12 +6,22 @@
       |
       <router-link to="/no-existe">Not Found</router-link>
     </nav>
+    <div class="lang-selector">
+      <button @click="setLang('en')">EN</button>
+      <button @click="setLang('es')">ES</button>
+    </div>
   </header>
 </template>
 
 <script>
+import { loadLanguageAsync } from '../setup/i18n-setup';
 export default {
-  name: 'AppHeader'
+  name: 'AppHeader',
+  methods: {
+    setLang(lang) {
+      loadLanguageAsync(lang);
+    }
+  }
 };
 </script>
 

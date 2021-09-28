@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "mocks": "json-server --delay 1000 --watch ./mocks/db.json"
+    "mocks": "json-server --delay 1000 --watch --routes ./mocks/routes.json ./mocks/db.json"
   },
   "dependencies": {
     "core-js": "^3.6.5",
