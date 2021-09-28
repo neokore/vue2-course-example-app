@@ -30,6 +30,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   padding: 16px;
 
@@ -39,6 +40,12 @@ export default {
 
   nav {
     flex: 0 0 auto;
+  }
+
+  .lang-selector {
+    display: flex;
+    flex-direction: row;
+    padding-left: 16px;
   }
 }
 </style>

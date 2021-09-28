@@ -2,11 +2,14 @@
   <div id="app">
     <router-view name="header"></router-view>
     <router-view></router-view>
+    <user-message />
   </div>
 </template>
 
 <script>
+import UserMessage from './components/UserMessage.vue';
 export default {
+  components: { UserMessage },
   name: 'App'
 };
 </script>

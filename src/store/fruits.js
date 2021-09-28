@@ -36,7 +36,7 @@ export default {
         }
         commit(
           'messages/addMessage',
-          { type: 'error', message },
+          { type: 'error', text: message },
           { root: true }
         );
       }
@@ -52,7 +52,7 @@ export default {
         }
         commit(
           'messages/addMessage',
-          { type: 'error', message },
+          { type: 'error', text: message },
           { root: true }
         );
       }
